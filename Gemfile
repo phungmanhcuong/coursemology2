@@ -17,6 +17,9 @@ gem 'rails', '~> 7.2.1'
 # Soft delete
 gem 'paranoia'
 
+# Soft delete
+gem 'paranoia', '~> 2.4'
+
 # Use PostgreSQL for the backend
 gem 'pg'
 

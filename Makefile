@@ -5,7 +5,7 @@ SHELL := /bin/zsh
 CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 REMOTE := origin
 
-clean:
+soft-delete:
 	echo "Preparing to setup soft-delete"
 	rails generate migration AddDeletedAtToCourseUsers deleted_at:datetime:index
 	rails db:migrate

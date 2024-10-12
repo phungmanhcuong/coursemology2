@@ -1,9 +1,12 @@
+require 'logger'
+
 # frozen_string_literal: true
 class Instance < ApplicationRecord
   include Instance::CourseComponentsConcern
   include Generic::CollectionConcern
 
   DEFAULT_INSTANCE_ID = 0
+  @@logger = Logger.new(STDOUT)
 
   has_settings_on :settings
 
@@ -145,6 +148,7 @@ class Instance < ApplicationRecord
 
     client_id = ENV.fetch('KEYCLOAK_BE_CLIENT_ID', nil)
     client_secret = ENV.fetch('KEYCLOAK_BE_CLIENT_SECRET', nil)
+    @@logger.info("Client ID: #{client_secret}")
     credentials = Keycloak::Client.get_token_by_client_credentials(client_id, client_secret)
     access_token = JSON.parse(credentials)['access_token']
     service = "clients/#{ENV.fetch('KEYCLOAK_FE_CLIENT_UUID', nil)}"

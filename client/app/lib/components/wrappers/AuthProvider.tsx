@@ -32,6 +32,8 @@ export const oidcConfig = {
   onSigninCallback,
 };
 
+console.log(oidcConfig);
+
 const AuthProvider = (props: AuthProviderProps): JSX.Element => {
   return <OIDCAuthProvider {...oidcConfig}>{props.children}</OIDCAuthProvider>;
 };

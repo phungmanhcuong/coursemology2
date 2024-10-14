@@ -15,7 +15,7 @@ gem 'tzinfo-data', platforms: [:mswin, :mswin64]
 gem 'rails', '~> 7.2.1'
 
 # Soft delete
-gem 'paranoia', '~> 2.4'
+gem 'paranoia'
 
 # Use PostgreSQL for the backend
 gem 'pg'

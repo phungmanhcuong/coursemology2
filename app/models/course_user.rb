@@ -177,6 +177,17 @@ class CourseUser < ApplicationRecord
     all.exists?(user: user)
   end
 
+  # Soft delete the course user.
+  def destroy
+    experience_points_records.each(&:destroy) if experience_points_records.exists?
+    learning_rate_records.each(&:destroy) if learning_rate_records.exists?
+    course_user_achievements.each(&:destroy) if course_user_achievements.exists?
+    email_unsubscriptions.each(&:destroy) if email_unsubscriptions.exists?
+    group_users.each(&:destroy) if group_users.exists?
+    personal_times.each(&:destroy) if personal_times.exists?
+    super
+  end
+
   # Test whether this course_user is a manager (i.e. manager or owner)
   #
   # @return [Boolean] True if course_user is a staff

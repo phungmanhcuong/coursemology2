@@ -83,10 +83,6 @@ Rails.application.routes.draw do
     post 'mark_as_read'
   end
 
-  resources :courses do
-    resources :course_users, only: [:destroy]
-  end
-
   resources :jobs, only: [:show]
 
   resources :instance_user_role_requests, path: 'role_requests' do

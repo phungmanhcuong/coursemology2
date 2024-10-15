@@ -54,6 +54,14 @@ class Course::EnrolRequestsController < Course::ComponentController
   private
 
   def create_course_user
+    # restoring the course user if it was deleted
+    existing_course_user = CourseUser.with_deleted.find_by(course_id: current_course, user_id: @enrol_request.user_id)
+    if existing_course_user
+      existing_course_user.restore
+      @enrol_request.update(approve: true)
+      return existing_course_user
+    end
+
     course_user = CourseUser.new(course_user_params.
       reverse_merge(course: current_course, user_id: @enrol_request.user_id,
                     timeline_algorithm: current_course.default_timeline_algorithm))

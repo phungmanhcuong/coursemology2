@@ -188,6 +188,18 @@ class CourseUser < ApplicationRecord
     super
   end
 
+  # Restore the course user.
+  def restore
+    super
+    experience_points_records.with_deleted.each(&:restore) if experience_points_records.with_deleted.exists?
+    learning_rate_records.with_deleted.each(&:restore) if learning_rate_records.with_deleted.exists?
+    course_user_achievements.with_deleted.each(&:restore) if course_user_achievements.with_deleted.exists?
+    email_unsubscriptions.with_deleted.each(&:restore) if email_unsubscriptions.with_deleted.exists?
+    group_users.with_deleted.each(&:restore) if group_users.with_deleted.exists?
+    personal_times.with_deleted.each(&:restore) if personal_times.with_deleted.exists?
+  end
+
+
   # Test whether this course_user is a manager (i.e. manager or owner)
   #
   # @return [Boolean] True if course_user is a staff

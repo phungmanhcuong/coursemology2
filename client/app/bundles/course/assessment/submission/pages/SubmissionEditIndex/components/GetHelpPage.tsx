@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Close, Send } from '@mui/icons-material';
 import {
@@ -15,18 +15,11 @@ import {
 } from '@mui/material';
 import { blue, grey } from '@mui/material/colors';
 
-import {
-  generateLiveFeedback,
-  initializeLiveFeedback,
-} from 'course/assessment/submission/actions/answers';
-import actionTypes, {
-  workflowStates,
-} from 'course/assessment/submission/constants'; // Adjust the import path as necessary
+import { generateLiveFeedback } from 'course/assessment/submission/actions/answers';
+import actionTypes from 'course/assessment/submission/constants'; // Adjust the import path as necessary
 import { getAssessment } from 'course/assessment/submission/selectors/assessments';
 import { getLiveFeedbacks } from 'course/assessment/submission/selectors/liveFeedbacks';
-import { getQuestionFlags } from 'course/assessment/submission/selectors/questionFlags';
 import { getQuestions } from 'course/assessment/submission/selectors/questions';
-import { getSubmission } from 'course/assessment/submission/selectors/submissions';
 import translationsGlobal from 'course/assessment/submission/translations';
 import { getSubmissionId } from 'lib/helpers/url-helpers';
 import { useAppDispatch, useAppSelector } from 'lib/hooks/store';
@@ -110,7 +103,6 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
       );
 
       setInput('');
-      // dispatch(initializeLiveFeedback(questionId));
       dispatch({
         type: actionTypes.LIVE_FEEDBACK_USER_REQUEST,
         payload: {

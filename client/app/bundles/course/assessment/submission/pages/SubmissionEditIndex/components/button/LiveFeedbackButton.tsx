@@ -18,11 +18,12 @@ import useTranslation from 'lib/hooks/useTranslation';
 
 interface Props {
   questionId: number;
+  onClick?: () => void; // Make the onClick prop optional
 }
 
 const LiveFeedbackButton: FC<Props> = (props) => {
   const { t } = useTranslation();
-  const { questionId } = props;
+  const { questionId, onClick } = props; // Destructure onClick prop
 
   const dispatch = useAppDispatch();
 
@@ -83,7 +84,7 @@ const LiveFeedbackButton: FC<Props> = (props) => {
         (!graderView && attemptsLeft === 0)
       }
       id="get-live-feedback"
-      onClick={() => onGenerateLiveFeedback()}
+      onClick={onClick} // Use the onClick prop if provided and then call onGenerateLiveFeedback
       startIcon={
         (isRequestingLiveFeedback || isPollingLiveFeedback) && (
           <LoadingIndicator bare size={20} />

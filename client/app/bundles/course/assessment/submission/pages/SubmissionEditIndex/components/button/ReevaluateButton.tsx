@@ -50,6 +50,7 @@ const ReevaluateButton: FC<Props> = (props) => {
     question.isCodaveri;
 
   const onGenerateFeedback = (): void => {
+    console.log('onGenerateFeedback');
     dispatch(generateFeedback(submissionId, answerId, questionId));
   };
 

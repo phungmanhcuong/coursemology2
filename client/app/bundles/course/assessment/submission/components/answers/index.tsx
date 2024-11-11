@@ -1,24 +1,25 @@
-// eslint-disable-next-line simple-import-sort/imports
-import { memo } from 'react';
+import {memo, useEffect} from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Divider, Typography } from '@mui/material';
 import equal from 'fast-deep-equal';
-import { FIELD_LONG_DEBOUNCE_DELAY_MS } from 'lib/constants/sharedConstants';
-import { useAppDispatch } from 'lib/hooks/store';
-import { useDebounce } from 'lib/hooks/useDebounce';
+import { QuestionType } from 'types/course/assessment/question';
 import { SubmissionQuestionData } from 'types/course/assessment/submission/question/types';
 
-import { QuestionType } from 'types/course/assessment/question';
+import GetHelpPage from 'course/assessment/submission/pages/SubmissionEditIndex/components/button/GetHelpPage';
+import { FIELD_LONG_DEBOUNCE_DELAY_MS } from 'lib/constants/sharedConstants';
+import { useAppDispatch, useAppSelector } from 'lib/hooks/store';
+import { useDebounce } from 'lib/hooks/useDebounce';
+
 import { saveAnswer, updateClientVersion } from '../../actions/answers';
 import { uploadTextResponseFiles } from '../../actions/answers/textResponse';
+import useErrorTranslation from '../../pages/SubmissionEditIndex/useErrorTranslation';
+import { ErrorType } from '../../pages/SubmissionEditIndex/validations/types';
+import { updateAnswerFlagSavingStatus } from '../../reducers/answerFlags';
+import { QuestionHistory } from '../../reducers/history/types';
 
 import Answer from './Answer';
 import AnswerHeader from './AnswerHeader';
 import { AnswerPropsMap } from './types';
-import { QuestionHistory } from '../../reducers/history/types';
-import { updateAnswerFlagSavingStatus } from '../../reducers/answerFlags';
-import useErrorTranslation from '../../pages/SubmissionEditIndex/useErrorTranslation';
-import { ErrorType } from '../../pages/SubmissionEditIndex/validations/types';
 
 interface SubmissionAnswerProps<T extends keyof typeof QuestionType> {
   answerId: number | null;
@@ -29,6 +30,7 @@ interface SubmissionAnswerProps<T extends keyof typeof QuestionType> {
   questionType: T;
   readOnly: boolean;
   showMcqMrqSolution: boolean;
+  stepIndex: number;
 }
 
 const DebounceDelayMap = {
@@ -55,11 +57,20 @@ const SubmissionAnswer = <T extends keyof typeof QuestionType>(
     questionType,
     readOnly,
     showMcqMrqSolution,
+    stepIndex,
   } = props;
   const dispatch = useAppDispatch();
 
   const { getValues, resetField } = useFormContext();
   const errorMessages = useErrorTranslation(allErrors);
+
+  const liveFeedback = useAppSelector(
+    (state) => state.assessments.submission.liveFeedback,
+  );
+
+  const questionId = question.id;
+  const isShowingPopup =
+    liveFeedback?.feedbackByQuestion?.[questionId]?.isShowingPopup ?? false;
 
   const handleSaveAnswer = (
     answerData: unknown,
@@ -158,7 +169,6 @@ const SubmissionAnswer = <T extends keyof typeof QuestionType>(
         historyQuestions={historyQuestions}
         question={question}
       />
-
       <Divider />
 
       {errorMessages.map((message) => (
@@ -177,15 +187,16 @@ const SubmissionAnswer = <T extends keyof typeof QuestionType>(
       />
 
       <Divider />
-
       <Answer
         answerId={answerId}
         answerProps={answerPropsMap[questionType]}
         question={question}
         questionType={questionType}
       />
+      {isShowingPopup && <GetHelpPage stepIndex={stepIndex} />}
     </>
   );
 };
 
-export default memo(SubmissionAnswer, equal);
+const Abc = memo(SubmissionAnswer, equal);
+export default Abc;

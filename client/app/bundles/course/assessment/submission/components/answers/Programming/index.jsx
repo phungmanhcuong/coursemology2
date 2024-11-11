@@ -259,26 +259,27 @@ const ProgrammingFiles = ({
     );
 
     return (
-      <Card sx={cardStyle}>
-        <CardActions
-          onClick={focusEditorOnFeedbackLine}
-          sx={styles.cardActions}
-        >
-          <Typography fontWeight="bold" sx={{ ml: 1 }} variant="subtitle1">
-            {t(translations.lineHeader, { linenum: feedbackItem.linenum })}
-          </Typography>
-          <Box sx={{ flex: '1', width: '100%' }} />
-          {renderLikeButton()}
-          {renderDislikeButton()}
-          {renderDeleteButton()}
-        </CardActions>
-        <CardContent
-          onClick={focusEditorOnFeedbackLine}
-          sx={styles.cardContent}
-        >
-          <Typography variant="body2">{feedbackItem.feedback}</Typography>
-        </CardContent>
-      </Card>
+        <Card sx={cardStyle}>
+          <div>before feedback</div>
+          <CardActions
+              onClick={focusEditorOnFeedbackLine}
+              sx={styles.cardActions}
+          >
+            <Typography fontWeight="bold" sx={{ml: 1}} variant="subtitle1">
+              {t(translations.lineHeader, {linenum: feedbackItem.linenum})}
+            </Typography>
+            <Box sx={{flex: '1', width: '100%'}}/>
+            {renderLikeButton()}
+            {renderDislikeButton()}
+            {renderDeleteButton()}
+          </CardActions>
+          <CardContent
+              onClick={focusEditorOnFeedbackLine}
+              sx={styles.cardContent}
+          >
+            <Typography variant="body2">{feedbackItem.feedback}</Typography>
+          </CardContent>
+        </Card>
     );
   };
 
@@ -295,6 +296,7 @@ const ProgrammingFiles = ({
       variant="persistent"
     >
       <div>
+
         {annotations.map((feedbackItem) =>
           renderFeedbackCard(filename, feedbackItem),
         )}
@@ -349,12 +351,13 @@ const Programming = (props) => {
     getIsSavingAnswer(state, answerId),
   );
 
-  const feedbackFiles = useAppSelector(
-    (state) =>
-      state.assessments.submission.liveFeedback?.feedbackByQuestion?.[
-        question.id
-      ]?.feedbackFiles ?? [],
-  );
+  // const feedbackFiles = useAppSelector(
+  //   (state) =>
+  //     state.assessments.submission.liveFeedback?.feedbackByQuestion?.[
+  //       question.id
+  //     ]?.feedbackFiles ?? [],
+  // );
+  const feedbackFiles = [];
 
   return (
     <div className="mt-5">

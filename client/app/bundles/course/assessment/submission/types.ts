@@ -66,6 +66,7 @@ interface LiveFeedback {
   answerId: number;
   feedbackFiles: Record<string, FeedbackLine[]>;
   liveFeedbackId: number;
+  isShowingPopup?: boolean;
 }
 
 export interface LiveFeedbackState {

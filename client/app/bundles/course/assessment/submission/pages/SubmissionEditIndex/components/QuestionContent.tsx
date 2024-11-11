@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import {
@@ -62,6 +62,8 @@ const QuestionContent: FC<Props> = (props) => {
     ? submissionErrors[answerId]?.errorTypes ?? []
     : [];
 
+  const [showGetHelp, setShowGetHelp] = useState(false);
+
   return (
     <>
       <SubmissionAnswer
@@ -74,11 +76,15 @@ const QuestionContent: FC<Props> = (props) => {
           historyQuestions,
           graderView,
           showMcqMrqSolution,
+          showGetHelp,
+          stepIndex,
         }}
       />
+
       {autograded ? (
         <AutogradedActionButtonsRow
           handleNext={handleNext}
+          setShowGetHelp={setShowGetHelp}
           stepIndex={stepIndex}
         />
       ) : (
@@ -90,6 +96,7 @@ const QuestionContent: FC<Props> = (props) => {
       {(autograded || !viewHistory) && (
         <AutogradingErrorPanel questionId={questionId} />
       )}
+
       <TestCaseView questionId={questionId} />
       {(autograded || !viewHistory) &&
         !attempting &&

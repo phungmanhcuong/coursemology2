@@ -22,27 +22,6 @@ const convertFeedbackFilesToStrings = (feedbacks) => {
 };
 export default function (state = initialState, action) {
   switch (action.type) {
-    // case actions.LIVE_FEEDBACK_INITIAL: {
-    //   const { questionId } = action.payload;
-    //   return produce(state, (draft) => {
-    //     if (!(questionId in draft)) {
-    //       draft.feedbackByQuestion[questionId] = {
-    //         isRequestingLiveFeedback: true,
-    //         pendingFeedbackToken: null,
-    //         answerId: null,
-    //         liveFeedbackId: null,
-    //         feedbackFiles: [],
-    //         // isShowingPopup: false,
-    //       };
-    //     } else {
-    //       draft.feedbackByQuestion[questionId] = {
-    //         ...draft.feedbackByQuestion[questionId],
-    //         isRequestingLiveFeedback: true,
-    //         // isShowingPopup: false,
-    //       };
-    //     }
-    //   });
-    // }
     case actions.LIVE_FEEDBACK_REQUEST: {
       const { token, questionId, liveFeedbackId, feedbackUrl } = action.payload;
       return produce(state, (draft) => {
@@ -113,67 +92,13 @@ export default function (state = initialState, action) {
     }
 
     case actions.LIVE_FEEDBACK_OPEN_POPUP: {
-      console.log('OPEN_POPUP', action.payload);
       const { questionId, isShowingPopup } = action.payload;
       return produce(state, (draft) => {
-        console.log('OPEN_POPUP', action.payload);
         draft.feedbackByQuestion[questionId] = draft.feedbackByQuestion[questionId] || {};
         draft.feedbackByQuestion[questionId].isShowingPopup = isShowingPopup;
       });
     }
 
-    // case actions.LIVE_FEEDBACK_FAILURE: {
-    //   const { questionId } = action.payload;
-    //   return produce(state, (draft) => {
-    //     draft.feedbackByQuestion[questionId] = {
-    //       ...draft.feedbackByQuestion[questionId],
-    //       isRequestingLiveFeedback: false,
-    //       pendingFeedbackToken: null,
-    //     };
-    //   });
-    // }
-    // case actions.LIVE_FEEDBACK_ITEM_MARK_RESOLVED: {
-    //   const { questionId, lineId, path } = action.payload;
-    //   return produce(state, (draft) => {
-    //     if (path in draft.feedbackByQuestion[questionId].feedbackFiles) {
-    //       draft.feedbackByQuestion[questionId].feedbackFiles[path] =
-    //         draft.feedbackByQuestion[questionId].feedbackFiles[path].map(
-    //           (line) =>
-    //             line.id === lineId ? { ...line, state: 'resolved' } : line,
-    //         );
-    //     }
-    //   });
-    // }
-    // case actions.LIVE_FEEDBACK_ITEM_MARK_DISMISSED: {
-    //   const { questionId, lineId, path } = action.payload;
-    //   return produce(state, (draft) => {
-    //     if (path in draft.feedbackByQuestion[questionId].feedbackFiles) {
-    //       draft.feedbackByQuestion[questionId].feedbackFiles[path] =
-    //         draft.feedbackByQuestion[questionId].feedbackFiles[path].map(
-    //           (line) =>
-    //             line.id === lineId ? { ...line, state: 'dismissed' } : line,
-    //         );
-    //     }
-    //   });
-    // }
-    // case actions.LIVE_FEEDBACK_ITEM_DELETE: {
-    //   const { questionId, lineId, path } = action.payload;
-    //   return produce(state, (draft) => {
-    //     if (path in draft.feedbackByQuestion[questionId].feedbackFiles) {
-    //       draft.feedbackByQuestion[questionId].feedbackFiles[path] =
-    //         draft.feedbackByQuestion[questionId].feedbackFiles[path].filter(
-    //           (line) => line.id !== lineId,
-    //         );
-    //       if (
-    //         !draft.feedbackByQuestion[questionId].feedbackFiles[path] ||
-    //         draft.feedbackByQuestion[questionId].feedbackFiles[path].length ===
-    //           0
-    //       ) {
-    //         delete draft.feedbackByQuestion[questionId].feedbackFiles[path];
-    //       }
-    //     }
-    //   });
-    // }
     default:
       return state;
   }

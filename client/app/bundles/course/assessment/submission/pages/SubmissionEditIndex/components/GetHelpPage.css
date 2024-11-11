@@ -1,0 +1,25 @@
+.get-help-page-paper {
+    position: absolute;
+    top: 100px;
+    margin-top: 16px;
+    right: 29px;
+    z-index: 1000;
+    width: 28vw;
+    height: 41%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.get-help-page-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e0e0e0; /* grey[200] */
+    padding: 16px; /* p: 2 */
+}
+
+.get-help-page-list {
+    flex-grow: 1;
+    overflow: auto;
+}

@@ -47,24 +47,14 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
       name: (_, chunks, cacheGroupKey) => {
-        /**
-         * Workers are not part of the `coursemology` runtime, so their dependencies
-         * are packed in a separate chunk. This chunk has `name` set to `undefined`.
-         * When simply `Array.prototype.join`ed, we will get weird chunk names like
-         * `vendors~coursemology~.js` or `vendors~.js` that `application_helper.rb`
-         * should inject. Normally, this isn't an issue with `HtmlWebpackPlugin`, but
-         * since we don't have that and are manually injecting webpack assets in
-         * `layouts/default.html.slim`, we combine these `undefined` chunks into
-         * `coursemology`'s runtime. So, we have one `vendors~coursemology.js`.
-         */
         const allChunksNames =
-          chunks
-            .map((chunk) => chunk.name)
-            .filter((name) => Boolean(name))
-            .join('~') || 'coursemology';
+            chunks
+                .map((chunk) => chunk.name)
+                .filter((name) => Boolean(name))
+                .join('~') || 'coursemology';
 
         const prefix =
-          cacheGroupKey === 'defaultVendors' ? 'vendors' : cacheGroupKey;
+            cacheGroupKey === 'defaultVendors' ? 'vendors' : cacheGroupKey;
 
         return `${prefix}~${allChunksNames}`;
       },
@@ -80,7 +70,6 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({ template: './public/index.html' }),
     new FaviconsWebpackPlugin({ logo: './favicon.svg', inject: true }),
-    // Do not require all locales in moment
     new ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en-.*|zh-.*)$/),
     new ForkTsCheckerWebpackPlugin({
       typescript: {
@@ -104,15 +93,16 @@ module.exports = {
         include: [
           resolve(__dirname, 'node_modules/rc-slider/assets'),
           resolve(
-            __dirname,
-            'node_modules/react-image-crop/dist/ReactCrop.css',
+              __dirname,
+              'node_modules/react-image-crop/dist/ReactCrop.css',
           ),
           resolve(
-            __dirname,
-            'node_modules/react-tooltip/dist/react-tooltip.min.css',
+              __dirname,
+              'node_modules/react-tooltip/dist/react-tooltip.min.css',
           ),
           resolve(__dirname, 'app/lib/components/core/fields/CKEditor.css'),
           resolve(__dirname, 'app/lib/components/core/fields/AceEditor.css'),
+          resolve(__dirname, 'app/bundles/course/assessment/submission/pages/SubmissionEditIndex/components/GetHelpPage.css'),
         ],
       },
       {

@@ -19,7 +19,50 @@
     padding: 16px; /* p: 2 */
 }
 
+.get-help-page-divider {
+    margin: 0;
+}
+
+.get-help-page-box-column {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.get-help-page-box-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px; /* mb: 2 */
+}
+
+.get-help-page-box-full-width {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.get-help-page-textfield {
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.get-help-page-textfield .MuiOutlinedInput-root {
+    border-radius: 20px;
+}
+
+.get-help-page-listitemtext {
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 60%;
+    font-size: 0.5rem;
+}
+
 .get-help-page-list {
     flex-grow: 1;
     overflow: auto;
+}
+
+.get-help-page-iconbutton {
+    font-size: 4rem;
+    padding: 16px;
 }

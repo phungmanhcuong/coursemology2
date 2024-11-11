@@ -32,6 +32,8 @@ import { getSubmissionId } from 'lib/helpers/url-helpers';
 import { useAppDispatch, useAppSelector } from 'lib/hooks/store';
 import useTranslation from 'lib/hooks/useTranslation';
 
+import './GetHelpPage.css';
+
 const translations = defineMessages({
   chatWithCodaveri: {
     id: 'gethelp.chatWithCodaveri',
@@ -138,29 +140,8 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
   if (!open) return null;
 
   return (
-    <Paper
-      sx={{
-        position: 'absolute',
-        top: '100px',
-        marginTop: '16px',
-        right: '29px',
-        zIndex: 1000,
-        width: '28vw',
-        height: '41%',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: 0,
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          backgroundColor: grey[200],
-          p: 2,
-        }}
-      >
+    <Paper className="get-help-page-paper">
+      <Box className="get-help-page-box">
         <Typography fontWeight="bold" variant="h5">
           {formatMessage(translations.chatWithCodaveri)}
         </Typography>
@@ -180,8 +161,8 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
           <Close />
         </IconButton>
       </Box>
-      <Divider sx={{ my: 0 }} />
-      <List sx={{ flexGrow: 1, overflow: 'auto' }}>
+      <Divider className="get-help-page-divider" />
+      <List className="get-help-page-list">
         {messages.map((message, index) => (
           <ListItem
             key={index}
@@ -191,24 +172,19 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
             }}
           >
             <ListItemText
+              className="get-help-page-listitemtext"
               primary={message.text}
               secondary={message.timestamp}
               sx={{
                 backgroundColor:
                   message.sender === 'Codaveri' ? grey[300] : blue[100],
-                borderRadius: '10px',
-                padding: '10px',
-                maxWidth: '60%',
-                fontSize: '0.5rem',
               }}
             />
           </ListItem>
         ))}
       </List>
-      <Box
-        sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}
-      >
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+      <Box className="get-help-page-box-column">
+        <Box className="get-help-page-box-center">
           {suggestions.map((suggestion, index) => (
             <Button
               key={index}
@@ -220,12 +196,13 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
             </Button>
           ))}
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+        <Box className="get-help-page-box-full-width">
           <TextField
+            className="get-help-page-textfield"
             disabled={loading}
             fullWidth
             onChange={(e): void => setInput(e.target.value)}
-            onKeyPress={(e): void => {
+            onKeyDown={(e): void => {
               if (e.key === 'Enter') {
                 e.preventDefault();
                 e.stopPropagation();
@@ -233,20 +210,13 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
               }
             }}
             placeholder={formatMessage(translations.typeYourMessage)}
-            sx={{
-              borderRadius: '20px',
-              padding: '10px',
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '20px',
-              },
-            }}
             value={input}
             variant="outlined"
           />
           <IconButton
+            className="get-help-page-iconbutton"
             disabled={loading}
             onClick={handleSendMessage}
-            sx={{ fontSize: '4rem', padding: '16px' }}
           >
             <Send />
           </IconButton>

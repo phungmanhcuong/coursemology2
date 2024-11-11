@@ -21,7 +21,6 @@ class CodaveriAsyncApiService
       body: @payload.to_json
     )
     parse_response(response)
-    # byebug
   end
 
   def get

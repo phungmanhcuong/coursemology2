@@ -13,18 +13,14 @@ class CodaveriApiService
   end
 
   def connect_to_codaveri
-    # byebug
     connection = Excon.new(@api_endpoint)
-    puts "Payload: #{@payload.to_json}"
-    response = connection.post(
+    connection.post(
       headers: {
         'x-api-key' => ENV['CODAVERI_API_KEY'],
         'Content-Type' => 'application/json'
       },
       body: @payload.to_json
     )
-    puts "Response: #{response.body}"
-    # byebug
   end
 
   private

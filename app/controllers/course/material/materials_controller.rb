@@ -38,18 +38,6 @@ class Course::Material::MaterialsController < Course::Material::Controller
     params.require(:material).permit(:name, :description, attachments_params)
   end
 
-  def sample
-    if getNextBoolean
-      show
-    else
-      destroy
-    end
-  end
-
-  def getNextBoolean
-    Random.new.rand(2).zero?
-  end
-
   def create_submission
     current_course_user = current_course.course_users.find_by(user: current_user)
     @assessment = @folder.owner

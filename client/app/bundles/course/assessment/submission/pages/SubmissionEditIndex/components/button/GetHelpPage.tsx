@@ -62,20 +62,14 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
   const [input, setInput] = useState<string>('');
   const [open, setOpen] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
-  const [localFeedbackFiles, setLocalFeedbackFiles] = useState<unknown[]>([]);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
   const assessment = useAppSelector(getAssessment);
-  const submission = useAppSelector(getSubmission);
   const questions = useAppSelector(getQuestions);
-  const questionFlags = useAppSelector(getQuestionFlags);
   const liveFeedback = useAppSelector(getLiveFeedbacks);
   const submissionId = getSubmissionId();
   const { questionIds } = assessment;
   const questionId = questionIds[stepIndex];
   const question = questions[questionId];
-  const { answerId, attemptsLeft } = question;
-  const { isResetting } = questionFlags[questionId] || {};
+  const { answerId } = question;
 
   const isRequestingLiveFeedback =
     liveFeedback?.feedbackByQuestion?.[questionId]?.isRequestingLiveFeedback ??
@@ -91,16 +85,6 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
         question.id
       ]?.feedbackFiles ?? [],
   );
-
-  // const isShowingPopup = useAppSelector(
-  //   (state) =>
-  //     state.assessments.submission.liveFeedback?.feedbackByQuestion?.[
-  //       question.id
-  //     ]?.isShowingPopup ?? false,
-  // );
-
-  const isShowingPopup =
-    liveFeedback?.feedbackByQuestion?.[questionId]?.isShowingPopup === false;
 
   useEffect(() => {
     if (!isRequestingLiveFeedback && !isPollingLiveFeedback) {
@@ -220,7 +204,6 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
             />
           </ListItem>
         ))}
-        <div ref={messagesEndRef} />
       </List>
       <Box
         sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}
@@ -244,6 +227,8 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
             onChange={(e): void => setInput(e.target.value)}
             onKeyPress={(e): void => {
               if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
                 handleSendMessage();
               }
             }}

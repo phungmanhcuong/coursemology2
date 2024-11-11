@@ -1,4 +1,4 @@
-import {memo, useEffect} from 'react';
+import { memo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Divider, Typography } from '@mui/material';
 import equal from 'fast-deep-equal';
@@ -198,5 +198,4 @@ const SubmissionAnswer = <T extends keyof typeof QuestionType>(
   );
 };
 
-const Abc = memo(SubmissionAnswer, equal);
-export default Abc;
+export default memo(SubmissionAnswer, equal);

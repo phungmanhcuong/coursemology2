@@ -92,47 +92,55 @@ const InputArea: FC<{
   suggestions,
   handleSuggestionClick,
   placeholder,
-}) => (
-  <Box className="get-help-page-box-column">
-    <Box className="get-help-page-box-center">
-      {suggestions.map((suggestion, index) => (
-        <Button
-          key={index}
-          onClick={() => handleSuggestionClick(suggestion)}
-          sx={{ mx: 1 }}
+}) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setInput(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      handleSendMessage();
+    }
+  };
+
+  return (
+    <Box className="get-help-page-box-column">
+      <Box className="get-help-page-box-center">
+        {suggestions.map((suggestion, index) => (
+          <Button
+            key={index}
+            onClick={() => handleSuggestionClick(suggestion)}
+            sx={{ mx: 1 }}
+            variant="outlined"
+          >
+            {suggestion}
+          </Button>
+        ))}
+      </Box>
+      <Box className="get-help-page-box-full-width">
+        <TextField
+          className="get-help-page-textfield"
+          disabled={loading}
+          fullWidth
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          value={input}
           variant="outlined"
+        />
+        <IconButton
+          className="get-help-page-iconbutton"
+          disabled={loading}
+          onClick={handleSendMessage}
         >
-          {suggestion}
-        </Button>
-      ))}
+          <Send />
+        </IconButton>
+      </Box>
     </Box>
-    <Box className="get-help-page-box-full-width">
-      <TextField
-        className="get-help-page-textfield"
-        disabled={loading}
-        fullWidth
-        onChange={(e): void => setInput(e.target.value)}
-        onKeyDown={(e): void => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            e.stopPropagation();
-            handleSendMessage();
-          }
-        }}
-        placeholder={placeholder}
-        value={input}
-        variant="outlined"
-      />
-      <IconButton
-        className="get-help-page-iconbutton"
-        disabled={loading}
-        onClick={handleSendMessage}
-      >
-        <Send />
-      </IconButton>
-    </Box>
-  </Box>
-);
+  );
+};
 
 const Header: FC<{
   formatMessage: (message: { id: string; defaultMessage: string }) => string;
@@ -232,25 +240,24 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
     setInput(suggestion);
   };
 
+  const handleClose = (): void => {
+    setOpen(false);
+    dispatch({
+      type: actionTypes.LIVE_FEEDBACK_OPEN_POPUP,
+      payload: {
+        questionId,
+        isShowingPopup: false,
+      },
+    });
+  };
+
   const suggestions = ['I am stuck', "My code doesn't work"];
 
   if (!open) return null;
 
   return (
     <Paper className="get-help-page-paper">
-      <Header
-        formatMessage={formatMessage}
-        onClose={() => {
-          setOpen(false);
-          dispatch({
-            type: actionTypes.LIVE_FEEDBACK_OPEN_POPUP,
-            payload: {
-              questionId,
-              isShowingPopup: false,
-            },
-          });
-        }}
-      />
+      <Header formatMessage={formatMessage} onClose={handleClose} />
       <Divider className="get-help-page-divider" />
       <MessageList messages={messages} />
       <InputArea

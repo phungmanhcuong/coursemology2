@@ -46,6 +46,111 @@ interface GetHelpPageProps {
   stepIndex: number;
 }
 
+const MessageList: FC<{
+  messages: {
+    text: string;
+    sender: 'Codaveri' | 'Student';
+    timestamp: string;
+  }[];
+}> = ({ messages }) => (
+  <List className="get-help-page-list">
+    {messages.map((message, index) => (
+      <ListItem
+        key={index}
+        sx={{
+          justifyContent:
+            message.sender === 'Codaveri' ? 'flex-start' : 'flex-end',
+        }}
+      >
+        <ListItemText
+          className="get-help-page-listitemtext"
+          primary={message.text}
+          secondary={message.timestamp}
+          sx={{
+            backgroundColor:
+              message.sender === 'Codaveri' ? grey[300] : blue[100],
+          }}
+        />
+      </ListItem>
+    ))}
+  </List>
+);
+
+const InputArea: FC<{
+  input: string;
+  setInput: (value: string) => void;
+  handleSendMessage: () => void;
+  loading: boolean;
+  suggestions: string[];
+  handleSuggestionClick: (suggestion: string) => void;
+  placeholder: string;
+}> = ({
+  input,
+  setInput,
+  handleSendMessage,
+  loading,
+  suggestions,
+  handleSuggestionClick,
+  placeholder,
+}) => (
+  <Box className="get-help-page-box-column">
+    <Box className="get-help-page-box-center">
+      {suggestions.map((suggestion, index) => (
+        <Button
+          key={index}
+          onClick={() => handleSuggestionClick(suggestion)}
+          sx={{ mx: 1 }}
+          variant="outlined"
+        >
+          {suggestion}
+        </Button>
+      ))}
+    </Box>
+    <Box className="get-help-page-box-full-width">
+      <TextField
+        className="get-help-page-textfield"
+        disabled={loading}
+        fullWidth
+        onChange={(e): void => setInput(e.target.value)}
+        onKeyDown={(e): void => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
+            handleSendMessage();
+          }
+        }}
+        placeholder={placeholder}
+        value={input}
+        variant="outlined"
+      />
+      <IconButton
+        className="get-help-page-iconbutton"
+        disabled={loading}
+        onClick={handleSendMessage}
+      >
+        <Send />
+      </IconButton>
+    </Box>
+  </Box>
+);
+
+const Header: FC<{
+  formatMessage: (message: { id: string; defaultMessage: string }) => string;
+  onClose: () => void;
+}> = ({ formatMessage, onClose }) => (
+  <Box className="get-help-page-box">
+    <Typography fontWeight="bold" variant="h5">
+      {formatMessage({
+        id: 'gethelp.chatWithCodaveri',
+        defaultMessage: 'Get Help',
+      })}
+    </Typography>
+    <IconButton onClick={onClose} size="small">
+      <Close />
+    </IconButton>
+  </Box>
+);
+
 const GetHelpPage: FC<GetHelpPageProps> = (props) => {
   const { t } = useTranslation();
   const { stepIndex } = props;
@@ -133,87 +238,30 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
 
   return (
     <Paper className="get-help-page-paper">
-      <Box className="get-help-page-box">
-        <Typography fontWeight="bold" variant="h5">
-          {formatMessage(translations.chatWithCodaveri)}
-        </Typography>
-        <IconButton
-          onClick={() => {
-            setOpen(false);
-            dispatch({
-              type: actionTypes.LIVE_FEEDBACK_OPEN_POPUP,
-              payload: {
-                questionId,
-                isShowingPopup: false,
-              },
-            });
-          }}
-          size="small"
-        >
-          <Close />
-        </IconButton>
-      </Box>
+      <Header
+        formatMessage={formatMessage}
+        onClose={() => {
+          setOpen(false);
+          dispatch({
+            type: actionTypes.LIVE_FEEDBACK_OPEN_POPUP,
+            payload: {
+              questionId,
+              isShowingPopup: false,
+            },
+          });
+        }}
+      />
       <Divider className="get-help-page-divider" />
-      <List className="get-help-page-list">
-        {messages.map((message, index) => (
-          <ListItem
-            key={index}
-            sx={{
-              justifyContent:
-                message.sender === 'Codaveri' ? 'flex-start' : 'flex-end',
-            }}
-          >
-            <ListItemText
-              className="get-help-page-listitemtext"
-              primary={message.text}
-              secondary={message.timestamp}
-              sx={{
-                backgroundColor:
-                  message.sender === 'Codaveri' ? grey[300] : blue[100],
-              }}
-            />
-          </ListItem>
-        ))}
-      </List>
-      <Box className="get-help-page-box-column">
-        <Box className="get-help-page-box-center">
-          {suggestions.map((suggestion, index) => (
-            <Button
-              key={index}
-              onClick={() => handleSuggestionClick(suggestion)}
-              sx={{ mx: 1 }}
-              variant="outlined"
-            >
-              {suggestion}
-            </Button>
-          ))}
-        </Box>
-        <Box className="get-help-page-box-full-width">
-          <TextField
-            className="get-help-page-textfield"
-            disabled={loading}
-            fullWidth
-            onChange={(e): void => setInput(e.target.value)}
-            onKeyDown={(e): void => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                e.stopPropagation();
-                handleSendMessage();
-              }
-            }}
-            placeholder={formatMessage(translations.typeYourMessage)}
-            value={input}
-            variant="outlined"
-          />
-          <IconButton
-            className="get-help-page-iconbutton"
-            disabled={loading}
-            onClick={handleSendMessage}
-          >
-            <Send />
-          </IconButton>
-        </Box>
-      </Box>
+      <MessageList messages={messages} />
+      <InputArea
+        handleSendMessage={handleSendMessage}
+        handleSuggestionClick={handleSuggestionClick}
+        input={input}
+        loading={loading}
+        placeholder={formatMessage(translations.typeYourMessage)}
+        setInput={setInput}
+        suggestions={suggestions}
+      />
     </Paper>
   );
 };

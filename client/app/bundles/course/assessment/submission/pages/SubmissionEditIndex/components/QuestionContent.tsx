@@ -39,30 +39,23 @@ const QuestionContent: FC<Props> = (props) => {
   const topics = useAppSelector(getTopics);
   const submissionFlags = useAppSelector(getSubmissionFlags);
   const historyQuestions = useAppSelector(getHistoryQuestions);
-
   const {
     formState: { errors },
   } = useFormContext();
-
   const { autograded, showMcqMrqSolution, questionIds } = assessment;
   const { workflowState, graderView } = submission;
   const { isSaving } = submissionFlags;
-
+  const [showGetHelp, setShowGetHelp] = useState(false);
   const attempting = workflowState === workflowStates.Attempting;
-
   const questionId = questionIds[stepIndex];
   const question = questions[questionId];
   const { answerId, topicId, viewHistory, type } = question;
   const topic = topics[topicId];
   const submissionErrors = errors as unknown as ErrorStruct[];
-
   const isProgrammingQuestion = type === questionTypes.Programming;
-
   const allErrors = answerId
     ? submissionErrors[answerId]?.errorTypes ?? []
     : [];
-
-  const [showGetHelp, setShowGetHelp] = useState(false);
 
   return (
     <>

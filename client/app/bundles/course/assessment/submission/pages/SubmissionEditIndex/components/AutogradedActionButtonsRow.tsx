@@ -18,11 +18,10 @@ import SubmitButton from './button/SubmitButton';
 interface Props {
   handleNext: () => void;
   stepIndex: number;
-  setShowGetHelp: (show: boolean) => void;
 }
 
 const AutogradedActionButtonsRow: FC<Props> = (props) => {
-  const { handleNext, stepIndex, setShowGetHelp } = props;
+  const { handleNext, stepIndex } = props;
   const dispatch = useAppDispatch();
   const assessment = useAppSelector(getAssessment);
   const submission = useAppSelector(getSubmission);
@@ -44,8 +43,6 @@ const AutogradedActionButtonsRow: FC<Props> = (props) => {
         isShowingPopup: true,
       },
     });
-
-    setShowGetHelp(true);
   };
 
   return (

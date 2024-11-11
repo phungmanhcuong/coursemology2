@@ -45,7 +45,6 @@ const QuestionContent: FC<Props> = (props) => {
   const { autograded, showMcqMrqSolution, questionIds } = assessment;
   const { workflowState, graderView } = submission;
   const { isSaving } = submissionFlags;
-  const [showGetHelp, setShowGetHelp] = useState(false);
   const attempting = workflowState === workflowStates.Attempting;
   const questionId = questionIds[stepIndex];
   const question = questions[questionId];
@@ -69,7 +68,6 @@ const QuestionContent: FC<Props> = (props) => {
           historyQuestions,
           graderView,
           showMcqMrqSolution,
-          showGetHelp,
           stepIndex,
         }}
       />
@@ -77,7 +75,6 @@ const QuestionContent: FC<Props> = (props) => {
       {autograded ? (
         <AutogradedActionButtonsRow
           handleNext={handleNext}
-          setShowGetHelp={setShowGetHelp}
           stepIndex={stepIndex}
         />
       ) : (

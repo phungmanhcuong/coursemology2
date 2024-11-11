@@ -5,7 +5,7 @@ import equal from 'fast-deep-equal';
 import { QuestionType } from 'types/course/assessment/question';
 import { SubmissionQuestionData } from 'types/course/assessment/submission/question/types';
 
-import GetHelpPage from 'course/assessment/submission/pages/SubmissionEditIndex/components/button/GetHelpPage';
+import GetHelpPage from 'course/assessment/submission/pages/SubmissionEditIndex/components/GetHelpPage';
 import { FIELD_LONG_DEBOUNCE_DELAY_MS } from 'lib/constants/sharedConstants';
 import { useAppDispatch, useAppSelector } from 'lib/hooks/store';
 import { useDebounce } from 'lib/hooks/useDebounce';

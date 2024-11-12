@@ -20,27 +20,12 @@ import actionTypes from 'course/assessment/submission/constants'; // Adjust the 
 import { getAssessment } from 'course/assessment/submission/selectors/assessments';
 import { getLiveFeedbacks } from 'course/assessment/submission/selectors/liveFeedbacks';
 import { getQuestions } from 'course/assessment/submission/selectors/questions';
-import translationsGlobal from 'course/assessment/submission/translations';
+import translations from 'course/assessment/submission/translations';
 import { getSubmissionId } from 'lib/helpers/url-helpers';
 import { useAppDispatch, useAppSelector } from 'lib/hooks/store';
 import useTranslation from 'lib/hooks/useTranslation';
 
 import './GetHelpPage.css';
-
-const translations = defineMessages({
-  chatWithCodaveri: {
-    id: 'gethelp.chatWithCodaveri',
-    defaultMessage: 'Get Help',
-  },
-  typeYourMessage: {
-    id: 'gethelp.typeYourMessage',
-    defaultMessage: 'Type your message...',
-  },
-  nextQuestions: {
-    id: 'gethelp.nextQuestions',
-    defaultMessage: 'Next Questions',
-  },
-});
 
 interface GetHelpPageProps {
   stepIndex: number;
@@ -148,10 +133,7 @@ const Header: FC<{
 }> = ({ formatMessage, onClose }) => (
   <Box className="get-help-page-box">
     <Typography fontWeight="bold" variant="h5">
-      {formatMessage({
-        id: 'gethelp.chatWithCodaveri',
-        defaultMessage: 'Get Help',
-      })}
+      {formatMessage(translations.getHelpHeader)}
     </Typography>
     <IconButton onClick={onClose} size="small">
       <Close />
@@ -168,7 +150,6 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
     { text: string; sender: 'Codaveri' | 'Student'; timestamp: string }[]
   >([]);
   const [input, setInput] = useState<string>('');
-  const [open, setOpen] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const assessment = useAppSelector(getAssessment);
   const questions = useAppSelector(getQuestions);
@@ -205,15 +186,12 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
     if (input.trim()) {
       const questionIndex =
         questionIds.findIndex((id) => id === questionId) + 1;
-      const successMessage = t(translationsGlobal.liveFeedbackSuccess, {
+      const successMessage = t(translations.liveFeedbackSuccess, {
         questionIndex,
       });
-      const noFeedbackMessage = t(
-        translationsGlobal.liveFeedbackNoneGenerated,
-        {
-          questionIndex,
-        },
-      );
+      const noFeedbackMessage = t(translations.liveFeedbackNoneGenerated, {
+        questionIndex,
+      });
 
       setInput('');
       dispatch({
@@ -241,7 +219,6 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
   };
 
   const handleClose = (): void => {
-    setOpen(false);
     dispatch({
       type: actionTypes.LIVE_FEEDBACK_OPEN_POPUP,
       payload: {
@@ -252,8 +229,6 @@ const GetHelpPage: FC<GetHelpPageProps> = (props) => {
   };
 
   const suggestions = ['I am stuck', "My code doesn't work"];
-
-  if (!open) return null;
 
   return (
     <Paper className="get-help-page-paper">

@@ -620,6 +620,14 @@ const translations = defineMessages({
     id: 'course.assessment.submission.SubmissionEditIndex.TimeLimitBanner.minutesSeconds',
     defaultMessage: '{secs, plural, one {# second} other {# seconds}}',
   },
+  getHelpHeader: {
+    id: 'course.assessment.GetHelp.header',
+    defaultMessage: 'Get Help',
+  },
+  typeYourMessage: {
+    id: 'course.assessment.GetHelp.typeYourMessage',
+    defaultMessage: 'Type your message...',
+  },
 });
 
 export const scribingTranslations = defineMessages({

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import {
@@ -39,19 +39,25 @@ const QuestionContent: FC<Props> = (props) => {
   const topics = useAppSelector(getTopics);
   const submissionFlags = useAppSelector(getSubmissionFlags);
   const historyQuestions = useAppSelector(getHistoryQuestions);
+
   const {
     formState: { errors },
   } = useFormContext();
+
   const { autograded, showMcqMrqSolution, questionIds } = assessment;
   const { workflowState, graderView } = submission;
   const { isSaving } = submissionFlags;
+
   const attempting = workflowState === workflowStates.Attempting;
+
   const questionId = questionIds[stepIndex];
   const question = questions[questionId];
   const { answerId, topicId, viewHistory, type } = question;
   const topic = topics[topicId];
   const submissionErrors = errors as unknown as ErrorStruct[];
+
   const isProgrammingQuestion = type === questionTypes.Programming;
+
   const allErrors = answerId
     ? submissionErrors[answerId]?.errorTypes ?? []
     : [];
@@ -71,7 +77,6 @@ const QuestionContent: FC<Props> = (props) => {
           stepIndex,
         }}
       />
-
       {autograded ? (
         <AutogradedActionButtonsRow
           handleNext={handleNext}
@@ -86,7 +91,6 @@ const QuestionContent: FC<Props> = (props) => {
       {(autograded || !viewHistory) && (
         <AutogradingErrorPanel questionId={questionId} />
       )}
-
       <TestCaseView questionId={questionId} />
       {(autograded || !viewHistory) &&
         !attempting &&
